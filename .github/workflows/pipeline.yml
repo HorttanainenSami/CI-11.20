@@ -31,7 +31,7 @@ jobs:
            wait-on: http://localhost:3001
   deploy:
     name: Deploy app
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-20.04
     needs: [test_and_lint]
     steps:
