@@ -1,4 +1,7 @@
 {
+  "engines" : {
+    "node" : "16.13.2"
+  },
   "name": "puhelinluettelon_ja_tietokanta",
   "version": "1.0.0",
   "description": "",
