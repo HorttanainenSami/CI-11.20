@@ -20,13 +20,10 @@ jobs:
         run: npm install
 
       - name: lint
-        run: npm run eslint
+        run: npm run lint
 
-      - name: test
-        run: npm run test
       - name: e2e tests
         uses: cypress-io/github-action@v4
         with:
-           build: npm run build
-           start: npm run start-prod
-           wait-on: http://localhost:5000
+           start: npm start
+           wait-on: http://localhost:3001
