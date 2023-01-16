@@ -30,8 +30,24 @@ jobs:
            start: npm start
            wait-on: http://localhost:3001
   deploy:
+    name: Deploy app
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-20.04
+    needs: [test_and_lint]
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
+  tag_release:
+      if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+      needs: [deploy]
+      runs-on: ubuntu-20.04
+      steps:
+        - uses: actions/checkout@v3
+          with: 
+            fetch-depth: 0
+        - name: Bump version and push tag
+          uses: anothrNick/github-tag-action@1.36.0
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            DEFAULT_BUMP: patch
