@@ -7,7 +7,8 @@ on:
   pull_request:
     branches: [master]
     types: [opened, synchronize]
-    
+env:
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
 jobs:
   test_and_lint:
     runs-on: ubuntu-20.04
