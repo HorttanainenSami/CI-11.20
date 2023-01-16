@@ -1,0 +1,30 @@
+name: ci_pipeline
+
+on:
+  push:
+    branches:
+     - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+env:
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+jobs:
+  test_and_lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: npm install 
+        run: npm install
+
+      - name: lint
+        run: npm run lint
+
+      - name: e2e tests
+        uses: cypress-io/github-action@v4
+        with:
+           start: npm start
+           wait-on: http://localhost:3001
